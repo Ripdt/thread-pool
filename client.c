@@ -1,4 +1,3 @@
-//Cliente pipe - testado no WSL
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -6,10 +5,19 @@
 #include <sys/un.h>
 #include <unistd.h>
 
-#define SOCK_PATH "/tmp/pipeso"
+#define SOCK_PATH_STRING "/tmp/pipestr"
+#define SOCK_PATH_NUMBER "/tmp/pipenum"
+#define STR_TYPE 'S'
+#define NUM_TYPE 'N'
 
-int main()
+int main(int argc, char* argv[])
 {
+    if (argc < 2) {
+        fprintf(stderr, "Uso: %s [S/N]\n", argv[0]);
+        return 1;
+    }
+
+    char *pipe_type = argv[1];
     int sockfd, len;
     struct sockaddr_un remote;
     char buffer[1024];
@@ -25,7 +33,14 @@ int main()
     // Connect to server
     memset(&remote, 0, sizeof(remote));
     remote.sun_family = AF_UNIX;
-    strncpy(remote.sun_path, SOCK_PATH, sizeof(remote.sun_path) - 1);
+
+    if (pipe_type[0] == STR_TYPE) {
+        strncpy(remote.sun_path, SOCK_PATH_STRING, sizeof(remote.sun_path) - 1);
+    }
+    else if (pipe_type[0] == NUM_TYPE) {
+        strncpy(remote.sun_path, SOCK_PATH_NUMBER, sizeof(remote.sun_path) - 1);
+    }
+
     len = strlen(remote.sun_path) + sizeof(remote.sun_family);
     if (connect(sockfd, (struct sockaddr *)&remote, len) < 0)
     {
