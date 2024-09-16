@@ -90,6 +90,6 @@ gcc client.c -o ./bin/client
 ```
 Then run it:
 ```
-./bin/client
+./bin/client [S|N]
 ```
 You can run as much clients as you want.
