@@ -82,7 +82,7 @@ gcc server.c thpool.c -lpthread -o ./bin/server
 ```
 And run it:
 ```
-./bin/client
+./bin/server
 ```
 In a different terminal, compile a client
 ```
