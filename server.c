@@ -112,7 +112,7 @@ int main() {
         int maxfd = (sockfd_str > sockfd_num) ? sockfd_str : sockfd_num;
 
         // Wait for a connection on either pipe
-        if (select(maxfd + 1, &readfds, NULL, NULL, NULL) < 0) {
+        if (select(maxfd + 1, &readfds, NULL /*write*/, NULL /*time*/, NULL /*timeout*/) < 0) {
             perror("Erro no select");
             break;
         }
